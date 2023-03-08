@@ -2,9 +2,10 @@ import java.util.Locale;
 
 public class Polygon {
     private Point[] arr;
-
-    public Polygon(int count) {
+    private Style styleSettings;
+    public Polygon(int count, Style styleSettings) {
         arr = new Point[count];
+        this.styleSettings = styleSettings;
     }
 
     public void setPoint(int index, Point point) {
@@ -20,7 +21,7 @@ public class Polygon {
         for(Point point : arr)
             pointsString += point.x + "," + point.y + " ";
 
-        return String.format(Locale.ENGLISH,"<polygon points=\"%s\" />", pointsString);
+        return String.format(Locale.ENGLISH,"<polygon points=\"%s\" style = \"%s\"/>", pointsString,styleSettings.toSvg());
     }
 
 
