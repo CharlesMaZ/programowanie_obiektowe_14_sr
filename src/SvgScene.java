@@ -1,36 +1,29 @@
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Locale;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class SvgScene {
-    private ArrayList<Shape> shapes =new ArrayList<>();
-    private int height=0,width=0;
-    public void addShape(Shape shape){
-        shapes.add(shape);
-        Point maxPunkt = shape.getMaxCords();
-        if(width < maxPunkt.x)
-            width= (int) maxPunkt.x + 1;
-        if(height < maxPunkt.y)
-            height= (int) maxPunkt.y + 1;
+    private Shape shapes[] = new Shape[0];
 
+    public void addShape(Shape poly) {
+        shapes = Arrays.copyOf(shapes, shapes.length + 1);
+        shapes[shapes.length - 1] = poly;
     }
-    public void save(String filename){
-        String svg= String.format(Locale.ENGLISH,"<svg width=\"%d\" height=\"%d\">",width,height);
-        for(Shape shape : shapes){
-            svg+= shape.toSvg();
-        }
-        svg+="</svg>";
+
+    public void saveHtml(String path) {
         try {
+            FileWriter file = new FileWriter(path);
+            file.write("<html>\n<body>\n");
+            file.write(String.format("<svg width=1000 height=1000>\n"));
+            for(Shape shape : shapes)
+                file.write("\t"+ shape.toSvg()+"\n");
+            file.write("</svg>\n</body>\n</html>\n");
+            file.close();
 
 
-            FileWriter fw
-                    = new FileWriter(filename);
-            fw.write(svg);
-            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (Exception e) {
-            e.getStackTrace();
-        }
+
     }
-
 }
