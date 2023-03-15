@@ -8,9 +8,12 @@ public class Polygon implements Shape {
     }
 
     public String toSvg(String parametres) {
+
         String pointsString = "";
         for(Vec2 point : points)
             pointsString += point.x + "," + point.y + " ";
+
+        System.out.println("toSvg Polygon " + String.format(Locale.ENGLISH,"<polygon points=\"%s\" %s />", pointsString,parametres));
 
         return String.format(Locale.ENGLISH,"<polygon points=\"%s\" %s />", pointsString,parametres);
     }

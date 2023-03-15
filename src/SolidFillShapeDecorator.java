@@ -10,7 +10,12 @@ public class SolidFillShapeDecorator extends ShapeDecorator {
 
     @Override
     public String toSvg(String parametres) {
+
+
         String fill = String.format(Locale.ENGLISH,"fill=\"%s\"%s",color,parametres);
+
+        System.out.println("toSvg SolidFillShapeDecorator " + fill);
+
         return decoratedShape.toSvg(fill);
     }
 }

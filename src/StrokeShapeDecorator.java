@@ -10,7 +10,11 @@ public class StrokeShapeDecorator extends ShapeDecorator{
         this.width = width;
     }
     public String toSvg(String parameters){
+
         String fill = String.format(Locale.ENGLISH,"stroke=\"%s\" stroke-width=\"%f\"%s",color,width,parameters);
+
+        System.out.println("toSvg StrokeShapeDecorator " + fill);
+
         return decoratedShape.toSvg(fill);
     }
 }
