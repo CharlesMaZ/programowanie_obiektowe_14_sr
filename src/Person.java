@@ -1,6 +1,10 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Set;
 
 public class Person implements Serializable {
@@ -56,5 +60,18 @@ public class Person implements Serializable {
                     throw new IncestException(leftSideParent, this);
             }
         }
+    }
+    public static Person CreateHuman(String WayToFile) throws FileNotFoundException {
+        File file = new File(WayToFile);
+        String name;
+        Scanner scanner = new Scanner(file);
+        name = scanner.nextLine();
+        LocalDate DateBirth = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        LocalDate DateDeath = null;
+        if(scanner.hasNextLine()){
+            DateDeath = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        }
+        Person person1 = new Person(name,DateBirth,DateDeath);
+        return person1;
     }
 }

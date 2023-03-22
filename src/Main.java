@@ -1,8 +1,11 @@
 import java.io.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class Main {
     public static void save(String path) {
@@ -72,6 +75,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-
+        try {
+            Person Alicja = Person.CreateHuman("test/test_same_osoby/Alicja Stefanek.txt");
+            System.out.println(Alicja);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
