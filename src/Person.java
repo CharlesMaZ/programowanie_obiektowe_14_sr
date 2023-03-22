@@ -10,6 +10,7 @@ public class Person implements Serializable {
     private LocalDate birth, death;
     private Person parents[] = new Person[2];
     public static List<Person> people = new ArrayList<>();
+    public String path;
 
     public Person(String name, LocalDate birth) {
         this(name, birth, null);
@@ -48,6 +49,10 @@ public class Person implements Serializable {
                 '}';
     }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     void checkForIncest() throws IncestException {
         if(parents[0] == null || parents[1] == null)
             return;
@@ -70,14 +75,16 @@ public class Person implements Serializable {
         if(scanner.hasNextLine()){
             DateDeath = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         }
-        for(int i=0;i < people.size(); ++i){
-            if(people.get(i).name.equals(name)){
-                        throw new AmbigiousPersonException(name);
-                }
+        for(var person : people){
+            if(person.name.equals(name)){
+                        throw new AmbigiousPersonException(name,WayToFile, person.path);
             }
+        }
         // CHECK
         Person person1 = new Person(name,DateBirth,DateDeath);
+        person1.setPath(WayToFile);
         people.add(person1);
         return person1;
+
     }
 }

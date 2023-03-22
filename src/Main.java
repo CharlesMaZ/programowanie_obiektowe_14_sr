@@ -79,11 +79,13 @@ public class Main {
         try {
             Person Alicja = Person.CreateHuman("test/test_same_osoby/Alicja Stefanek.txt");
             Person Alicja2 = Person.CreateHuman("test/test_same_osoby/Alicja Stefanek.txt");
+
             System.out.println(Alicja);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
-        } catch (AmbigiousPersonException e) {
-            throw new RuntimeException(e);
+        } catch (AmbigiousPersonException error) {
+            System.out.println(error.path1);
+            System.out.println(error.path2);
         }
 
     }
