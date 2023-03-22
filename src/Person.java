@@ -3,14 +3,13 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Person implements Serializable {
     private String name;
     private LocalDate birth, death;
     private Person parents[] = new Person[2];
+    public static List<Person> people = new ArrayList<>();
 
     public Person(String name, LocalDate birth) {
         this(name, birth, null);
@@ -61,7 +60,7 @@ public class Person implements Serializable {
             }
         }
     }
-    public static Person CreateHuman(String WayToFile) throws FileNotFoundException {
+    public static Person CreateHuman(String WayToFile) throws FileNotFoundException, AmbigiousPersonException {
         File file = new File(WayToFile);
         String name;
         Scanner scanner = new Scanner(file);
@@ -71,7 +70,14 @@ public class Person implements Serializable {
         if(scanner.hasNextLine()){
             DateDeath = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         }
+        for(int i=0;i < people.size(); ++i){
+            if(people.get(i).name.equals(name)){
+                        throw new AmbigiousPersonException(name);
+                }
+            }
+        // CHECK
         Person person1 = new Person(name,DateBirth,DateDeath);
+        people.add(person1);
         return person1;
     }
 }
