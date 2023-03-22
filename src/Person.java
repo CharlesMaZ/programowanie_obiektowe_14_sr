@@ -65,26 +65,69 @@ public class Person implements Serializable {
             }
         }
     }
-    public static Person CreateHuman(String WayToFile) throws FileNotFoundException, AmbigiousPersonException {
+
+    public static Person getPersonByName(String name) {
+        for(Person person : people) {
+            if(person.name.equals(name)) {
+                return person;
+            }
+        }
+
+        return null;
+    }
+
+    public static Person CreateHuman(String WayToFile) throws FileNotFoundException, AmbigiousPersonException, IncestException {
         File file = new File(WayToFile);
         String name;
         Scanner scanner = new Scanner(file);
         name = scanner.nextLine();
         LocalDate DateBirth = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         LocalDate DateDeath = null;
+        Person parent1 = null;
+        Person parent2 = null;
+
         if(scanner.hasNextLine()){
-            DateDeath = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+            String line = scanner.nextLine();
+
+            if(!line.equals("Rodzice:")) {
+                DateDeath = LocalDate.parse(line, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+
+                if(scanner.hasNextLine()) {
+                    line = scanner.nextLine();
+                }
+            }
+
+            if(line.equals("Rodzice:")) {
+                parent1 = getPersonByName(scanner.nextLine());
+                parent2 = null;
+                if(scanner.hasNextLine()){
+                    parent2 = getPersonByName(scanner.nextLine());
+                }
+            }
+
+
         }
+
         for(var person : people){
             if(person.name.equals(name)){
                         throw new AmbigiousPersonException(name,WayToFile, person.path);
             }
         }
         // CHECK
-        Person person1 = new Person(name,DateBirth,DateDeath);
+        Person person1 = new Person(name,DateBirth,DateDeath, parent1, parent2);
         person1.setPath(WayToFile);
         people.add(person1);
         return person1;
+    }
 
+    public static List<Person> createPeople(List<String> paths) throws IncestException, FileNotFoundException, AmbigiousPersonException {
+        List<Person> people = new ArrayList<>();
+
+        for(String path : paths) {
+            Person person = CreateHuman(path);
+            people.add(person);
+        }
+
+        return people;
     }
 }

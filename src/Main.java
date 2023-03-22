@@ -77,15 +77,21 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            Person Alicja = Person.CreateHuman("test/test_same_osoby/Alicja Stefanek.txt");
-            Person Alicja2 = Person.CreateHuman("test/test_same_osoby/Alicja Stefanek.txt");
+            List<String> paths = new ArrayList<>();
+            paths.add("test/test_rodzice/p1.txt");
+            paths.add("test/test_rodzice/p2.txt");
+            paths.add("test/test_rodzice/p3.txt");
 
-            System.out.println(Alicja);
+            List<Person> result = Person.createPeople(paths);
+
+            System.out.println(result.get(2));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (AmbigiousPersonException error) {
             System.out.println(error.path1);
             System.out.println(error.path2);
+        } catch (IncestException e) {
+            throw new RuntimeException(e);
         }
 
     }
