@@ -12,6 +12,7 @@ public class Person implements Serializable {
     public static List<Person> people = new ArrayList<>();
     public String path;
 
+
     public Person(String name, LocalDate birth) {
         this(name, birth, null);
     }
