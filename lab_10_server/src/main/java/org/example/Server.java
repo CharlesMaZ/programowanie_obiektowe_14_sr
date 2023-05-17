@@ -32,12 +32,12 @@ public class Server {
             if(client == sender) {
                 continue;
             }
-            client.sendMessage(message);
+            client.sendMessage(sender.getClientName() + ": " +message);
         }
     }
 
     public void removeClient(ClientThread client) {
         clients.remove(client);
-        broadcast( client.getClientName() + " left the chat", null);
+        broadcast( " left the chat", null);
     }
 }

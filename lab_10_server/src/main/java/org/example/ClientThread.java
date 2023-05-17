@@ -51,6 +51,6 @@ public class ClientThread extends Thread {
     public void login(String clientName) {
         this.clientName = clientName;
         this.sendMessage("Welcome, " + clientName);
-        server.broadcast(clientName + " joined the chat", this);
+        server.broadcast(" joined the chat", this);
     }
 }

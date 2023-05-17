@@ -17,6 +17,7 @@ public class Main {
 
             while (true) {
                 String message = reader.readLine();
+
                 connectionThread.sendMessage(message);
             }
         } catch (IOException e) {
