@@ -5,7 +5,11 @@ import java.net.Socket;
 
 public class ClientThread extends Thread {
     private Socket socket;
-    public ClientThread(Socket socket) {
+    PrintWriter writer;
+    private Server server;
+
+    public ClientThread(Socket socket, Server server) {
+        this.server = server;
         this.socket = socket;
     }
 
@@ -15,19 +19,21 @@ public class ClientThread extends Thread {
             InputStream input  = socket.getInputStream();
             OutputStream output = socket.getOutputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            PrintWriter writer = new PrintWriter(output, true);
+            writer = new PrintWriter(output, true);
 
             System.out.println("New client!");
             String message;
             while ((message = reader.readLine()) != null) {
-                System.out.println(message);
-                writer.println(message);
-                //writer.flush();
+                server.broadcast(message, this);
             }
             System.out.println("client disconnected");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void sendMessage(String message) {
+        writer.println(message);
     }
 }

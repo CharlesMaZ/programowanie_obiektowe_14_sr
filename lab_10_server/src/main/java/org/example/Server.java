@@ -21,9 +21,18 @@ public class Server {
     public void listen() throws IOException {
         while(true) {
             Socket socket = serverSocket.accept();
-            ClientThread thread = new ClientThread(socket);
+            ClientThread thread = new ClientThread(socket, this);
             clients.add(thread);
             thread.start();
+        }
+    }
+
+    public void broadcast(String message, ClientThread sender) {
+        for(var client : clients) {
+            if(client == sender) {
+                continue;
+            }
+            client.sendMessage(message);
         }
     }
 }
