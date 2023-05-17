@@ -17,8 +17,16 @@ public class Main {
 
             while (true) {
                 String message = reader.readLine();
-
-                connectionThread.sendMessage(message);
+                if (message.startsWith("/")){
+                    String[] result = message.split(" ", 2);
+                    switch (result[0]){
+                        case "/w":
+                            connectionThread.whisper(result[1]);
+                            break;
+                        default:
+                            System.out.println("Nierozponane polecenie");
+                    }
+                }else {connectionThread.sendMessage(message);}
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

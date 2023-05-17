@@ -40,4 +40,13 @@ public class Server {
         clients.remove(client);
         broadcast( " left the chat", null);
     }
+    public void whisper(String result, ClientThread sender){
+        String[] temp = result.split(" ", 2);
+        for (var client:clients){
+            if (client.getClientName().equals(temp[0])){
+                client.sendMessage(temp[1]);
+                return;
+            }
+        }   sender.sendMessage("Brak uzytkownika: " + temp[0]);
+    }
 }

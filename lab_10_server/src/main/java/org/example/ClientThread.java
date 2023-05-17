@@ -34,6 +34,7 @@ public class ClientThread extends Thread {
                 switch (result[0]) {
                     case "message" -> server.broadcast(result[1], this);
                     case "login" -> login(result[1]);
+                    case "whisper" -> server.whisper(result[1], this);
                 }
             }
             System.out.println("client disconnected");

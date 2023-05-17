@@ -29,6 +29,9 @@ public class ConnectionThread extends Thread {
         }
     }
 
+    public void whisper(String message){
+        writer.println("whisper:"+message);
+    }
     public void sendMessage(String message) {
         writer.println("message:" + message);
     }
