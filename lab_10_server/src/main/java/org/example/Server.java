@@ -35,4 +35,9 @@ public class Server {
             client.sendMessage(message);
         }
     }
+
+    public void removeClient(ClientThread client) {
+        clients.remove(client);
+        broadcast( client.getClientName() + " left the chat", null);
+    }
 }

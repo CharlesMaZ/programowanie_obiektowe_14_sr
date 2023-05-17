@@ -11,6 +11,10 @@ public class Main {
             connectionThread.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
+            System.out.println("Wpisz login:");
+            String clientName = reader.readLine();
+            connectionThread.login(clientName);
+
             while (true) {
                 String message = reader.readLine();
                 connectionThread.sendMessage(message);

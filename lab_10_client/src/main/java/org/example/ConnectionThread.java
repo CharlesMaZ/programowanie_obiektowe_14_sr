@@ -30,6 +30,10 @@ public class ConnectionThread extends Thread {
     }
 
     public void sendMessage(String message) {
-        writer.println(message);
+        writer.println("message:" + message);
+    }
+
+    public void login(String clientName) {
+        writer.println("login:" + clientName);
     }
 }

@@ -8,9 +8,15 @@ public class ClientThread extends Thread {
     PrintWriter writer;
     private Server server;
 
+    private String clientName;
+
     public ClientThread(Socket socket, Server server) {
         this.server = server;
         this.socket = socket;
+    }
+
+    public String getClientName() {
+        return clientName;
     }
 
     @Override
@@ -24,10 +30,15 @@ public class ClientThread extends Thread {
             System.out.println("New client!");
             String message;
             while ((message = reader.readLine()) != null) {
-                server.broadcast(message, this);
+                String[] result = message.split(":", 2);
+                switch (result[0]) {
+                    case "message" -> server.broadcast(result[1], this);
+                    case "login" -> login(result[1]);
+                }
             }
             System.out.println("client disconnected");
         } catch (IOException e) {
+            server.removeClient(this);
             throw new RuntimeException(e);
         }
 
@@ -35,5 +46,11 @@ public class ClientThread extends Thread {
 
     public void sendMessage(String message) {
         writer.println(message);
+    }
+
+    public void login(String clientName) {
+        this.clientName = clientName;
+        this.sendMessage("Welcome, " + clientName);
+        server.broadcast(clientName + " joined the chat", this);
     }
 }
