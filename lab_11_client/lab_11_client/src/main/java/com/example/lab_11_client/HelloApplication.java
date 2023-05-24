@@ -15,7 +15,14 @@ public class HelloApplication extends Application {
         ConnectionThread connectionThread = new ConnectionThread("localhost", 5000);
         connectionThread.start();
 
+        HelloController helloController = new HelloController(connectionThread);
+        ClientGUIReceiver clientGUIReceiver = new ClientGUIReceiver(helloController);
+        connectionThread.setClientReceiver(clientGUIReceiver);
+
+
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        fxmlLoader.setControllerFactory((controller) -> helloController);
+
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
 
         TextInputDialog dialog = new TextInputDialog();

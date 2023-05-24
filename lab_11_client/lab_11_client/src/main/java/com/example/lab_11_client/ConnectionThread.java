@@ -9,6 +9,12 @@ public class ConnectionThread extends Thread {
     private PrintWriter writer;
     private boolean running;
 
+    private ClientReceiver clientReceiver;
+
+    public void setClientReceiver(ClientReceiver clientReceiver) {
+        this.clientReceiver = clientReceiver;
+    }
+
     public ConnectionThread(String address, int port) {
         try {
             socket = new Socket(address, port);
@@ -25,11 +31,15 @@ public class ConnectionThread extends Thread {
             writer = new PrintWriter(output, true);
             String message;
             while ((message = reader.readLine()) != null){
-                if(message.startsWith("FI"))
-                    receiveFile(message.substring(2));
-                else
-                    System.out.println(message);
-                //runCommand(message);
+                String prefix = message.substring(0,2);
+                String postfix = message.substring(2);
+
+                switch(prefix) {
+                    case "BR" -> {
+                        String[] result = postfix.split(" ", 2);
+                        clientReceiver.receiveBroadcast(result[0], result[1]);
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
